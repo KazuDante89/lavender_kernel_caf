@@ -186,9 +186,9 @@ static struct class *class;
 static dev_t device;
 #ifndef MODULE
 static struct gwlan_loader *wlan_loader;
-static ssize_t wlan_boot_cb(struct kobject *kobj,
-			    struct kobj_attribute *attr,
-			    const char *buf, size_t count);
+ssize_t wlan_boot_cb(struct kobject *kobj,
+		     struct kobj_attribute *attr,
+		     const char *buf, size_t count);
 struct gwlan_loader {
 	bool loaded_state;
 	struct kobject *boot_wlan_obj;
