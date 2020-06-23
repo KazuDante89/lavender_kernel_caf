@@ -198,10 +198,6 @@ struct gwlan_loader {
 static struct kobj_attribute wlan_boot_attribute =
 	__ATTR(boot_wlan, 0220, NULL, wlan_boot_cb);
 
-static struct attribute *attrs[] = {
-	&wlan_boot_attribute.attr,
-	NULL,
-};
 #define MODULE_INITIALIZED 1
 #endif
 
