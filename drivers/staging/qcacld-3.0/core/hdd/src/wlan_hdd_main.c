@@ -185,7 +185,6 @@ static struct cdev wlan_hdd_state_cdev;
 static struct class *class;
 static dev_t device;
 #ifndef MODULE
-static struct gwlan_loader *wlan_loader;
 ssize_t wlan_boot_cb(struct kobject *kobj,
 		     struct kobj_attribute *attr,
 		     const char *buf, size_t count);
