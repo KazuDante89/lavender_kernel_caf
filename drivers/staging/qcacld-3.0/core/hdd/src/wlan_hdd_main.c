@@ -194,9 +194,6 @@ struct gwlan_loader {
 	struct attribute_group *attr_group;
 };
 
-static struct kobj_attribute wlan_boot_attribute =
-	__ATTR(boot_wlan, 0220, NULL, wlan_boot_cb);
-
 #define MODULE_INITIALIZED 1
 #endif
 
