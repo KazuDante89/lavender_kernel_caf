@@ -668,6 +668,7 @@ KBUILD_CFLAGS	+= -mllvm -polly \
 		   -mllvm -polly-reschedule=1 \
 		   -mllvm -polly-loopfusion-greedy=1 \
 		   -mllvm -polly-postopts=1 \
+			 -mllvm -polly-isl-arg=--no-schedule-serialize-sccs \
 		   -mllvm -polly-ast-use-context \
 		   -mllvm -polly-detect-keep-going \
 		   -mllvm -polly-vectorizer=stripmine \
@@ -780,8 +781,9 @@ ifeq ($(cc-name),clang)
 KBUILD_CFLAGS += $(call cc-disable-warning, format-invalid-specifier)
 KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
 KBUILD_CFLAGS += $(call cc-disable-warning, duplicate-decl-specifier)
-# KBUILD_CFLAGS += -Wno-undefined-optimized
-KBUILD_CFLAGS += -Wno-tautological-constant-out-of-range-compare
+KBUILD_CFLAGS += $(call cc-option, -Wno-undefined-optimized)
+KBUILD_CFLAGS += $(call cc-option, -Wno-tautological-constant-out-of-range-compare)
+KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
 
 # Quiet clang warning: comparison of unsigned expression < 0 is always false
 KBUILD_CFLAGS += $(call cc-disable-warning, tautological-compare)
@@ -798,7 +800,8 @@ KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
 endif
 
 ifeq ($(ld-name),lld)
-LDFLAGS += -O2
+KBUILD_LDFLAGS += --lto-O3
+LDFLAGS += --lto-O3
 endif
 
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
