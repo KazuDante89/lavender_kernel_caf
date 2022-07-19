@@ -262,6 +262,10 @@ static int smb2_parse_dt(struct smb2 *chip)
 				"qcom,fcc-max-ua", &chg->batt_profile_fcc_ua);
 	if (rc < 0)
 		chg->batt_profile_fcc_ua = -EINVAL;
+#ifdef CONFIG_MACH_LONGCHEER
+	if (hwc_check_global) {
+		chg->batt_profile_fcc_ua = 2900000;
+#endif		
 	}
 	rc = of_property_read_u32(node,
 				"qcom,fv-max-uv", &chg->batt_profile_fv_uv);
