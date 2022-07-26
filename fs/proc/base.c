@@ -1261,7 +1261,7 @@ err_task_lock:
 out:
 	/* These apps burn through CPU in the background. Don't let them. */
 	if (!err && oom_score_adj >= 700) {
-		if (!strcmp(task_comm, "id.GoogleCamera")) {
+		if (!strcmp(task_comm, "id.GoogleCamera" "com.android.vending" "com.google.android.gms" )) {
 			struct task_kill_info *kinfo;
 
 			kinfo = kmalloc(sizeof(*kinfo), GFP_KERNEL);
@@ -2446,7 +2446,7 @@ out:
 	return -ENOENT;
 }
 
-static struct dentry *proc_pident_lookup(struct inode *dir, 
+static struct dentry *proc_pident_lookup(struct inode *dir,
 					 struct dentry *dentry,
 					 const struct pid_entry *ents,
 					 unsigned int nents)
@@ -2591,7 +2591,7 @@ static const struct pid_entry attr_dir_stuff[] = {
 
 static int proc_attr_dir_readdir(struct file *file, struct dir_context *ctx)
 {
-	return proc_pident_readdir(file, ctx, 
+	return proc_pident_readdir(file, ctx,
 				   attr_dir_stuff, ARRAY_SIZE(attr_dir_stuff));
 }
 

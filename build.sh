@@ -48,7 +48,7 @@ KERNEL_DIR="$(pwd)"
 BASEDIR="$(basename "$KERNEL_DIR")"
 
 # The name of the Kernel, to name the ZIP
-ZIPNAME="Newbie_Walt_v00"
+ZIPNAME="Newbie_v00"
 
 # Build Author
 # Take care, it should be a universal and most probably, case-sensitive
@@ -215,8 +215,8 @@ COMMIT_HEAD=$(git log --oneline -1)
 
 	if [ $COMPILER = "clang" ]
 	then
-    msg "|| Cloning Azure Clang ||"
-		git clone --depth=1 https://gitlab.com/Panchajanya1999/azure-clang.git clang-llvm
+    msg "|| Cloning Neutron Clang ||"
+		git clone --depth=1 https://gitlab.com/dakkshesh07/neutron-clang.git -b Neutron-15 clang-llvm
 		# Toolchain Directory defaults to clang-llvm
 		TC_DIR=$KERNEL_DIR/clang-llvm
 	fi
