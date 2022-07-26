@@ -15,7 +15,7 @@
 #include <linux/kthread.h>
 #include <linux/slab.h>
 #include <trace/events/power.h>
-
+#include <linux/binfmts.h>
 #include "sched.h"
 #include "tune.h"
 
@@ -26,7 +26,6 @@ unsigned long boosted_cpu_util(int cpu);
 #define cpufreq_driver_fast_switch(x, y) 0
 #define cpufreq_enable_fast_switch(x)
 #define cpufreq_disable_fast_switch(x)
-#define LATENCY_MULTIPLIER			(1000)
 #define SUGOV_KTHREAD_PRIORITY	50
 
 struct sugov_tunables {
@@ -551,7 +550,7 @@ static void sugov_policy_free(struct sugov_policy *sg_policy)
 static int sugov_kthread_create(struct sugov_policy *sg_policy)
 {
 	struct task_struct *thread;
-	struct sched_param param = { .sched_priority = MAX_USER_RT_PRIO / 2 };
+	struct sched_param param = { .sched_priority = MAX_USER_RT_PRIO - 1 };
 	struct cpufreq_policy *policy = sg_policy->policy;
 	int ret;
 
@@ -660,19 +659,14 @@ static int sugov_init(struct cpufreq_policy *policy)
 		goto stop_kthread;
 	}
 
-	if (policy->up_transition_delay_us && policy->down_transition_delay_us) {
-		tunables->up_rate_limit_us = policy->up_transition_delay_us;
-		tunables->down_rate_limit_us = policy->down_transition_delay_us;
-	} else {
-		unsigned int lat;
+	if (cpumask_test_cpu(policy->cpu, cpu_perf_mask)) {
+		tunables->up_rate_limit_us = CONFIG_SCHEDUTIL_UP_RATE_LIMIT_BIG;
+		tunables->down_rate_limit_us = CONFIG_SCHEDUTIL_DOWN_RATE_LIMIT_BIG;
+	}
 
-                tunables->up_rate_limit_us = LATENCY_MULTIPLIER;
-                tunables->down_rate_limit_us = LATENCY_MULTIPLIER;
-		lat = policy->cpuinfo.transition_latency / NSEC_PER_USEC;
-		if (lat) {
-                        tunables->up_rate_limit_us *= lat;
-                        tunables->down_rate_limit_us *= lat;
-                }
+	if (cpumask_test_cpu(policy->cpu, cpu_lp_mask)) {
+		tunables->up_rate_limit_us = CONFIG_SCHEDUTIL_UP_RATE_LIMIT_LITTLE;
+		tunables->down_rate_limit_us = CONFIG_SCHEDUTIL_DOWN_RATE_LIMIT_LITTLE;
 	}
 
 	policy->governor_data = sg_policy;
@@ -824,4 +818,4 @@ static int __init sugov_register(void)
 {
 	return cpufreq_register_governor(&cpufreq_gov_schedutil);
 }
-fs_initcall(sugov_register);
+core_initcall(sugov_register);
