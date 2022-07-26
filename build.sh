@@ -216,7 +216,7 @@ COMMIT_HEAD=$(git log --oneline -1)
 	if [ $COMPILER = "clang" ]
 	then
     msg "|| Cloning Neutron Clang ||"
-		git clone --depth=1 https://gitlab.com/dakkshesh07/neutron-clang.git -b Neutron-15 clang-llvm
+		git clone --depth=1 https://gitlab.com/dakkshesh07/neutron-clang.git -b Neutron-14 clang-llvm
 		# Toolchain Directory defaults to clang-llvm
 		TC_DIR=$KERNEL_DIR/clang-llvm
 	fi
