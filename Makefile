@@ -16,7 +16,7 @@ NAME = Blurry Fish Butt
 MAKEFLAGS += -rR --include-dir=$(CURDIR)
 
 # Avoid funny character set dependencies
-unexport LC_ALL
+LC_ALL=C
 LC_COLLATE=C
 LC_NUMERIC=C
 export LC_COLLATE LC_NUMERIC
